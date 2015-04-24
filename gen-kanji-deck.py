@@ -8,6 +8,7 @@ def get_joyo_kanji():
 	"""
 
 	joyo_kanji_url = "http://en.wikipedia.org/wiki/List_of_j%C5%8Dy%C5%8D_kanji"
+	soup = BeautifulSoup(urlopen(joyo_kanji_url), 'html.parser')
 
 	characters = []
 	# the kanji are in the 2nd column of this table
