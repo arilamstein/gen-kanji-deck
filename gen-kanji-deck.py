@@ -1,9 +1,25 @@
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 
-def get_joyo_kanji(): 
+class Kanji:
 	"""
-	Gets a list of all joyo kanji from wikipedia
+	The Kanji class contains a character plus metadata about that character
+	"""
+
+	def __init__(self, character):
+		self.character      = character
+		self.dictionary_url = self.get_dictionary_url_for_character(character)
+		self.jlpt_level     = ""
+		self.definition     = ""
+		self.examples       = ""
+
+	def get_dictionary_url_for_character(self, character):
+		return "http://jisho.org/search/" + character + "%20%23kanji"
+
+
+def get_characters(): 
+	"""
+	Gets a list of all joyo kanji characters from wikipedia
 	For information on joyo kanji see: http://en.wikipedia.org/wiki/J%C5%8Dy%C5%8D_kanji
 	"""
 
@@ -16,31 +32,12 @@ def get_joyo_kanji():
 		cells = row.findAll('td')
 		if len(cells) > 0: # i.e., ignore the header
 			if cells[1].a.contents:
-				print cells[1].a.contents[0]
 				characters.append(cells[1].a.contents[0])
 	
 	return characters
 
-def get_url_from_kanji(kanji):
-	#return something like this for each kanji
-	#http://jisho.org/search/%E4%B8%80%20%23kanji
-	return
+characters = get_characters()
 
-def get_jlpt_level_from_page(page):
-	return
-
-def get_definitions_from_page(page):
-	return
-
-def get_common_words_from_kanji(kanji):
-	# no idea where to get this from
-	return
-
-def generate_card_from_data(data):
-	return
-
-kanji = get_joyo_kanji()
-for k in kanji:#
-	print k
-
-print len(kanji)
+kanji = []
+for c in characters:
+	kanji.append(Kanji(c))
