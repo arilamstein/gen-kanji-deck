@@ -16,6 +16,15 @@ class Kanji:
 	def get_dictionary_url_for_character(self, character):
 		return "http://jisho.org/search/" + character + "%20%23kanji"
 
+	def __str__(self):
+		""" 
+		Convert object to csv
+		"""
+		return ",".join([self.character, 
+						 self.dictionary_url, 
+						 self.jlpt_level, 
+						 self.definition, 
+						 self.examples]).encode('utf-8')
 
 def get_characters(): 
 	"""
@@ -41,3 +50,5 @@ characters = get_characters()
 kanji = []
 for c in characters:
 	kanji.append(Kanji(c))
+
+print kanji[0]
