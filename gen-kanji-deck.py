@@ -8,7 +8,6 @@ def get_joyo_kanji():
 	"""
 
 	joyo_kanji_url = "http://en.wikipedia.org/wiki/List_of_j%C5%8Dy%C5%8D_kanji"
-	soup = BeautifulSoup(urlopen(joyo_kanji_url))
 
 	characters = []
 	# the kanji are in the 2nd column of this table
@@ -40,5 +39,7 @@ def generate_card_from_data(data):
 	return
 
 kanji = get_joyo_kanji()
-for k in kanji:
+for k in kanji:#
 	print k
+
+print len(kanji)
