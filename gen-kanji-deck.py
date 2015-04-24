@@ -16,7 +16,7 @@ class Kanji:
 	def get_dictionary_url_for_character(self, character):
 		return "http://jisho.org/search/" + character + "%20%23kanji"
 
-	def __str__(self):
+	def as_csv(self):
 		""" 
 		Convert object to csv
 		"""
@@ -45,10 +45,11 @@ def get_characters():
 	
 	return characters
 
+# get all the joyo characters from wikipedia
 characters = get_characters()
 
-kanji = []
+# write them as a csv file
+f = open("kanji.csv", "w")
 for c in characters:
-	kanji.append(Kanji(c))
+	print >> f, Kanji(c).as_csv()
 
-print kanji[0]
