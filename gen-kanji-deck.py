@@ -9,21 +9,48 @@ class Kanji:
 	def __init__(self, character):
 		self.character      = character
 		self.dictionary_url = self.get_dictionary_url_for_character(character)
-		self.jlpt_level     = ""
-		self.definition     = ""
-		self.examples       = ""
+
+		self.get_data_from_dictionary()
 
 	def get_dictionary_url_for_character(self, character):
 		return "http://jisho.org/search/" + character + "%20%23kanji"
+
+	def get_jlpt_level(self, soup):
+		el = soup.find(attrs={'class': ('jlpt')})
+		if el:
+			return el.strong.contents[0]
+		else:
+			return "NA"
+
+	def get_definition(self, soup):
+		el = soup.find(attrs={'class':'kanji-details__main-meanings'})
+		if el:
+			return el.contents[0].encode('ascii').strip()
+		else:
+			return "NA"
+
+	def get_data_from_dictionary(self):
+		print self.dictionary_url
+		soup = BeautifulSoup(urlopen(self.dictionary_url.encode('utf-8')), 'html.parser')
+		
+		self.jlpt_level = self.get_jlpt_level(soup)
+		self.definition = self.get_definition(soup)
+
+		self.examples       = "c"
 
 	def as_csv(self):
 		""" 
 		Convert object to csv
 		"""
+		print [self.character, 
+						 self.dictionary_url, 
+						 self.jlpt_level, 
+						 '\"' + self.definition + '\"', 
+						 self.examples]
 		return ",".join([self.character, 
 						 self.dictionary_url, 
 						 self.jlpt_level, 
-						 self.definition, 
+						 '\"' + self.definition + '\"', 
 						 self.examples]).encode('utf-8')
 
 def get_characters(): 
@@ -50,6 +77,9 @@ characters = get_characters()
 
 # write them as a csv file
 f = open("kanji.csv", "w")
+#i = 0
 for c in characters:
 	print >> f, Kanji(c).as_csv()
-
+#	i+=1
+#	if i > 10:
+#		break
