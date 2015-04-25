@@ -8,12 +8,9 @@ class Kanji:
 
 	def __init__(self, character):
 		self.character      = character
-		self.dictionary_url = self.get_dictionary_url_for_character(character)
+		self.dictionary_url = "http://jisho.org/search/" + self.character + "%20%23kanji"
 
 		self.get_data_from_dictionary()
-
-	def get_dictionary_url_for_character(self, character):
-		return "http://jisho.org/search/" + character + "%20%23kanji"
 
 	def get_jlpt_level(self, soup):
 		el = soup.find(attrs={'class': ('jlpt')})
@@ -42,11 +39,6 @@ class Kanji:
 		""" 
 		Convert object to csv
 		"""
-		print [self.character, 
-						 self.dictionary_url, 
-						 self.jlpt_level, 
-						 '\"' + self.definition + '\"', 
-						 self.examples]
 		return ",".join([self.character, 
 						 self.dictionary_url, 
 						 self.jlpt_level, 
